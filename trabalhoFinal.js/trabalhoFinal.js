@@ -1,4 +1,4 @@
-// Definindo os objetos para os aspirantes a ninja
+// objetos para os aspirantes a ninja
 const Naruto = {
   nome: "Naruto",
   nivelChakra: 50,
@@ -28,7 +28,7 @@ function treinarChakra(aspirante) {
   exibirProgresso(aspirante);
 }
 
-// Função para adicionar novas habilidades ninja
+// adiciona novas habilidades ninja
 function adicionarHabilidade(aspirante, novaHabilidade) {
   aspirante.habilidadesNinjas.push(novaHabilidade);
   console.log(`${aspirante.nome} aprendeu uma nova habilidade ninja: ${novaHabilidade}.`);
@@ -44,16 +44,16 @@ function concluirMissao(aspirante) {
   exibirProgresso(aspirante);
 }
 
-// Função para exibir o progresso de um aspirante
+// exibe o progresso de um aspirante
 function exibirProgresso(aspirante) {
   console.log(`Nome: ${aspirante.nome}`);
   console.log(`Nível de Chakra: ${aspirante.nivelChakra}`);
   console.log(`Habilidades Ninjas: ${aspirante.habilidadesNinjas.join(", ")}`);
   console.log(`Missões Concluídas: ${aspirante.missoesConcluidas}`);
-  console.log("---------------------------------------");
+  
 }
 
-// Função para determinar o ninja mais habilidoso
+// determina o ninja mais habilidoso
 function determinarMaisHabilidoso(aspirantes) {
   let maisHabilidoso = aspirantes[0];
   for (let i = 1; i < aspirantes.length; i++) {
@@ -64,9 +64,9 @@ function determinarMaisHabilidoso(aspirantes) {
   console.log(`O ninja mais habilidoso é: ${maisHabilidoso.nome}`);
 }
 
-// Simular ações para os aspirantes
+// ações para os aspirantes
 treinarChakra(Naruto);
-adicionarHabilidade(Sasuke, "Amaterasu");
+adicionarHabilidade(Sasuke);
 concluirMissao(Sakura);
 treinarChakra(Naruto);
 treinarChakra(Sasuke);
