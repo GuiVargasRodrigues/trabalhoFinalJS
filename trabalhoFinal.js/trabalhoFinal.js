@@ -1,78 +1,128 @@
-// objetos para os aspirantes a ninja
-const Naruto = {
-  nome: "Naruto",
-  nivelChakra: 50,
-  habilidadesNinjas: ["Rasengan", "Jutsu Clones das Sombras"],
-  missoesConcluidas: 0
-};
+const readline = require('readline-sync');
 
-const Sasuke = {
-  nome: "Sasuke",
-  nivelChakra: 55,
-  habilidadesNinjas: ["Chidori", "Sharingan"],
-  missoesConcluidas: 0
-};
+let array = [];
 
-const Sakura = {
-  nome: "Sakura",
-  nivelChakra: 45,
-  habilidadesNinjas: ["Soco", "Jutsu de Cura"],
-  missoesConcluidas: 0
-};
+function adicionarNinja() {
+  let nomeNinja = readline.question("Digite o nome do ninja: ");
+  let quantChakra = Number(readline.question("Digite a quantidade de chakra do personagem: "));
 
-// Função para treinar o chakra
-function treinarChakra(aspirante) {
-  const aumentoChakra = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
-  aspirante.nivelChakra += aumentoChakra;
-  console.log(`${aspirante.nome} treinou seu chakra e ganhou ${aumentoChakra} pontos.`);
-  exibirProgresso(aspirante);
+  array.push({nome: nomeNinja, chakra: quantChakra, habilidades: [], missoesConcluidas: 0});
+
+  console.log(`${nomeNinja} foi adicionado como um novo aspirante a ninja.`);
 }
 
-// adiciona novas habilidades ninja
-function adicionarHabilidade(aspirante, novaHabilidade) {
-  aspirante.habilidadesNinjas.push(novaHabilidade);
-  console.log(`${aspirante.nome} aprendeu uma nova habilidade ninja: ${novaHabilidade}.`);
-  exibirProgresso(aspirante);
-}
-
-// Função para concluir missões ninja
-function concluirMissao(aspirante) {
-  aspirante.missoesConcluidas++;
-  const recompensaChakra = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
-  aspirante.nivelChakra += recompensaChakra;
-  console.log(`${aspirante.nome} concluiu uma missão e ganhou ${recompensaChakra} pontos de chakra.`);
-  exibirProgresso(aspirante);
-}
-
-// exibe o progresso de um aspirante
-function exibirProgresso(aspirante) {
-  console.log(`Nome: ${aspirante.nome}`);
-  console.log(`Nível de Chakra: ${aspirante.nivelChakra}`);
-  console.log(`Habilidades Ninjas: ${aspirante.habilidadesNinjas.join(", ")}`);
-  console.log(`Missões Concluídas: ${aspirante.missoesConcluidas}`);
-  
-}
-
-// determina o ninja mais habilidoso
-function determinarMaisHabilidoso(aspirantes) {
-  let maisHabilidoso = aspirantes[0];
-  for (let i = 1; i < aspirantes.length; i++) {
-    if (aspirantes[i].nivelChakra + aspirantes[i].habilidadesNinjas.length > maisHabilidoso.nivelChakra + maisHabilidoso.habilidadesNinjas.length) {
-      maisHabilidoso = aspirantes[i];
-    }
+function treinarChakra() {
+  let nomeNinja = selecionarNinja();
+  if (nomeNinja !== "") {
+    const aumentoChakra = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+    array.find(ninja => ninja.nome === nomeNinja).chakra += aumentoChakra;
+    console.log(`${nomeNinja} treinou seu chakra e ganhou ${aumentoChakra} pontos.`);
+    exibirProgresso(nomeNinja);
   }
+}
+
+function adicionarHabilidadeNinja() {
+  let nomeNinja = selecionarNinja();
+  if (nomeNinja !== "") {
+    let novaHabilidade = readline.question("Digite a nova habilidade ninja: ");
+    array.find(ninja => ninja.nome === nomeNinja).habilidades.push(novaHabilidade);
+    console.log(`${novaHabilidade} foi adicionada como uma nova habilidade ninja para ${nomeNinja}.`);
+    exibirProgresso(nomeNinja);
+  }
+}
+
+function concluirMissaoNinja() {
+  let nomeNinja = selecionarNinja();
+  if (nomeNinja !== "") {
+    let ninja = array.find(ninja => ninja.nome === nomeNinja);
+    ninja.missoesConcluidas++;
+    const recompensaChakra = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
+    ninja.chakra += recompensaChakra;
+    console.log(`${nomeNinja} concluiu uma missão e ganhou ${recompensaChakra} pontos de chakra.`);
+    exibirProgresso(nomeNinja);
+  }
+}
+
+function exibirProgresso(nomeNinja) {
+  let ninja = array.find(ninja => ninja.nome === nomeNinja);
+  console.log(`Nome: ${ninja.nome}`);
+  console.log(`Nível de Chakra: ${ninja.chakra}`);
+  console.log(`Habilidades Ninjas: ${ninja.habilidades.join(", ")}`);
+  console.log(`Missões Concluídas: ${ninja.missoesConcluidas}`);
+  console.log("---------------------------------------");
+}
+
+function exibirTodosNinjas() {
+  console.log("Informações de todos os ninjas:");
+  array.forEach(ninja => {
+    console.log(`Nome: ${ninja.nome}`);
+    console.log(`Nível de Chakra: ${ninja.chakra}`);
+    console.log(`Habilidades Ninjas: ${ninja.habilidades.join(", ")}`);
+    console.log(`Missões Concluídas: ${ninja.missoesConcluidas}`);
+    console.log("---------------------------------------");
+  });
+}
+
+function selecionarNinja() {
+  let nomeNinja = readline.question("Digite o nome do ninja: ");
+  if (!array.some(ninja => ninja.nome === nomeNinja)) {
+    console.log("Ninja não encontrado.");
+    return "";
+  }
+  return nomeNinja;
+}
+
+function determinarMaisHabilidoso() {
+  let maisHabilidoso = array.reduce((maisHabilidoso, ninja) => {
+    const totalChakra = ninja.chakra + ninja.habilidades.length;
+    const maisHabilidosoTotal = maisHabilidoso.chakra + maisHabilidoso.habilidades.length;
+    return totalChakra > maisHabilidosoTotal ? ninja : maisHabilidoso;
+  }, array[0]);
   console.log(`O ninja mais habilidoso é: ${maisHabilidoso.nome}`);
 }
 
-// ações para os aspirantes
-treinarChakra(Naruto);
-adicionarHabilidade(Sasuke);
-concluirMissao(Sakura);
-treinarChakra(Naruto);
-treinarChakra(Sasuke);
-concluirMissao(Naruto);
-concluirMissao(Sasuke);
-adicionarHabilidade(Sakura, "Byakugou no Jutsu");
-
-// Determinar o ninja mais habilidoso
-determinarMaisHabilidoso([Naruto, Sasuke, Sakura]);
+// Menu
+let opcao;
+while (opcao !== 7) {
+  console.log("Escolha uma ação:");
+  console.log("1. Criar um novo aspirante a ninja");
+  console.log("2. Treinar Chakra");
+  console.log("3. Adicionar Habilidade Ninja");
+  console.log("4. Concluir Missão Ninja");
+  console.log("5. Exibir Progresso de um Aspirante");
+  console.log("6. Exibir Informações de Todos os Ninjas");
+  console.log("7. Determinar o Ninja Mais Habilidoso");
+  console.log("8. Sair");
+  opcao = Number(readline.question("Opção: "));
+  switch (opcao) {
+    case 1:
+      adicionarNinja();
+      break;
+    case 2:
+      treinarChakra();
+      break;
+    case 3:
+      adicionarHabilidadeNinja();
+      break;
+    case 4:
+      concluirMissaoNinja();
+      break;
+    case 5:
+      let nomeNinja = selecionarNinja();
+      if (nomeNinja !== "") {
+        exibirProgresso(nomeNinja);
+      }
+      break;
+    case 6:
+      exibirTodosNinjas();
+      break;
+    case 7:
+      determinarMaisHabilidoso();
+      break;
+    case 8:
+      console.log("Saindo...");
+      break;
+    default:
+      console.log("Opção inválida.");
+  }
+}
