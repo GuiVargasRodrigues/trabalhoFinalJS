@@ -49,7 +49,7 @@ function exibirProgresso(nomeNinja) {
   console.log(`Nível de Chakra: ${ninja.chakra}`);
   console.log(`Habilidades Ninjas: ${ninja.habilidades.join(", ")}`);
   console.log(`Missões Concluídas: ${ninja.missoesConcluidas}`);
-  console.log("---------------------------------------");
+  
 }
 
 function exibirTodosNinjas() {
@@ -59,7 +59,7 @@ function exibirTodosNinjas() {
     console.log(`Nível de Chakra: ${ninja.chakra}`);
     console.log(`Habilidades Ninjas: ${ninja.habilidades.join(", ")}`);
     console.log(`Missões Concluídas: ${ninja.missoesConcluidas}`);
-    console.log("---------------------------------------");
+    
   });
 }
 
@@ -81,9 +81,9 @@ function determinarMaisHabilidoso() {
   console.log(`O ninja mais habilidoso é: ${maisHabilidoso.nome}`);
 }
 
-// Menu
+
 let opcao;
-while (opcao !== 7) {
+while (opcao !== 8) {
   console.log("Escolha uma ação:");
   console.log("1. Criar um novo aspirante a ninja");
   console.log("2. Treinar Chakra");
