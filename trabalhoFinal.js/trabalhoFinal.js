@@ -11,40 +11,30 @@ function adicionarNinja() {
   console.log(`${nomeNinja} foi adicionado como um novo aspirante a ninja.`);
 }
 
-function treinarChakra() {
-  let nomeNinja = selecionarNinja();
-  if (nomeNinja !== "") {
-    const aumentoChakra = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
-    array.find(ninja => ninja.nome === nomeNinja).chakra += aumentoChakra;
-    console.log(`${nomeNinja} treinou seu chakra e ganhou ${aumentoChakra} pontos.`);
-    exibirProgresso(nomeNinja);
-  }
+function treinarChakra(index) {
+  const aumentoChakra = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+  array[index].chakra += aumentoChakra;
+  console.log(`${array[index].nome} treinou seu chakra e ganhou ${aumentoChakra} pontos.`);
+  exibirProgresso(index);
 }
 
-function adicionarHabilidadeNinja() {
-  let nomeNinja = selecionarNinja();
-  if (nomeNinja !== "") {
-    let novaHabilidade = readline.question("Digite a nova habilidade ninja: ");
-    array.find(ninja => ninja.nome === nomeNinja).habilidades.push(novaHabilidade);
-    console.log(`${novaHabilidade} foi adicionada como uma nova habilidade ninja para ${nomeNinja}.`);
-    exibirProgresso(nomeNinja);
-  }
+function adicionarHabilidadeNinja(index) {
+  let novaHabilidade = readline.question("Digite a nova habilidade ninja: ");
+  array[index].habilidades.push(novaHabilidade);
+  console.log(`${novaHabilidade} foi adicionada como uma nova habilidade ninja para ${array[index].nome}.`);
+  exibirProgresso(index);
 }
 
-function concluirMissaoNinja() {
-  let nomeNinja = selecionarNinja();
-  if (nomeNinja !== "") {
-    let ninja = array.find(ninja => ninja.nome === nomeNinja);
-    ninja.missoesConcluidas++;
-    const recompensaChakra = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
-    ninja.chakra += recompensaChakra;
-    console.log(`${nomeNinja} concluiu uma missão e ganhou ${recompensaChakra} pontos de chakra.`);
-    exibirProgresso(nomeNinja);
-  }
+function concluirMissaoNinja(index) {
+  array[index].missoesConcluidas++;
+  const recompensaChakra = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
+  array[index].chakra += recompensaChakra;
+  console.log(`${array[index].nome} concluiu uma missão e ganhou ${recompensaChakra} pontos de chakra.`);
+  exibirProgresso(index);
 }
 
-function exibirProgresso(nomeNinja) {
-  let ninja = array.find(ninja => ninja.nome === nomeNinja);
+function exibirProgresso(index) {
+  let ninja = array[index];
   console.log(`Nome: ${ninja.nome}`);
   console.log(`Nível de Chakra: ${ninja.chakra}`);
   console.log(`Habilidades Ninjas: ${ninja.habilidades.join(", ")}`);
@@ -54,7 +44,8 @@ function exibirProgresso(nomeNinja) {
 
 function exibirTodosNinjas() {
   console.log("Informações de todos os ninjas:");
-  array.forEach(ninja => {
+  array.forEach((ninja, index) => {
+    console.log(`Índice: ${index}`);
     console.log(`Nome: ${ninja.nome}`);
     console.log(`Nível de Chakra: ${ninja.chakra}`);
     console.log(`Habilidades Ninjas: ${ninja.habilidades.join(", ")}`);
@@ -64,12 +55,12 @@ function exibirTodosNinjas() {
 }
 
 function selecionarNinja() {
-  let nomeNinja = readline.question("Digite o nome do ninja: ");
-  if (!array.some(ninja => ninja.nome === nomeNinja)) {
-    console.log("Ninja não encontrado.");
-    return "";
+  let index = Number(readline.question("Digite o índice do ninja: "));
+  if (isNaN(index) || index < 0 || index >= array.length) {
+    console.log("Índice inválido.");
+    return -1;
   }
-  return nomeNinja;
+  return index;
 }
 
 function determinarMaisHabilidoso() {
@@ -81,7 +72,7 @@ function determinarMaisHabilidoso() {
   console.log(`O ninja mais habilidoso é: ${maisHabilidoso.nome}`);
 }
 
-
+// Menu
 let opcao;
 while (opcao !== 8) {
   console.log("Escolha uma ação:");
@@ -99,18 +90,18 @@ while (opcao !== 8) {
       adicionarNinja();
       break;
     case 2:
-      treinarChakra();
+      treinarChakra(selecionarNinja());
       break;
     case 3:
-      adicionarHabilidadeNinja();
+      adicionarHabilidadeNinja(selecionarNinja());
       break;
     case 4:
-      concluirMissaoNinja();
+      concluirMissaoNinja(selecionarNinja());
       break;
     case 5:
-      let nomeNinja = selecionarNinja();
-      if (nomeNinja !== "") {
-        exibirProgresso(nomeNinja);
+      let index = selecionarNinja();
+      if (index !== -1) {
+        exibirProgresso(index);
       }
       break;
     case 6:
